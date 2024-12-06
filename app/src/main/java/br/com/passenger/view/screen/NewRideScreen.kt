@@ -13,10 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.passenger.view.component.TextInput
+import br.com.passenger.viewmodel.NewRideViewModel
 
 @Composable
-fun NewRideScreen(modifier: Modifier = Modifier) {
+fun NewRideScreen(
+    modifier: Modifier = Modifier,
+    viewModel: NewRideViewModel = viewModel(),
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -24,11 +29,23 @@ fun NewRideScreen(modifier: Modifier = Modifier) {
     ) {
         Text(text = "Nova Corrida", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
         Spacer(modifier = Modifier.height(16.dp))
-        TextInput(hint = "ID do passageiro")
-        TextInput(hint = "Endereço de Origem")
-        TextInput(hint = "Endereço de Destino")
+        TextInput(
+            hint = "ID do passageiro",
+            value = viewModel.passengerId.value,
+            onValueChange = viewModel::onPassengerIdChange,
+        )
+        TextInput(
+            hint = "Endereço de Origem",
+            value = viewModel.origin.value,
+            onValueChange = viewModel::onOriginChange,
+        )
+        TextInput(
+            hint = "Endereço de Destino",
+            value = viewModel.destination.value,
+            onValueChange = viewModel::onDestinationChange,
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {}) {
+        Button(onClick = viewModel::onClick) {
             Text("Solicitar")
         }
     }
