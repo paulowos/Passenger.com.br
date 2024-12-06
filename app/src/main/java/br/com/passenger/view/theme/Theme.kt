@@ -1,4 +1,4 @@
-package br.com.passenger.ui.theme
+package br.com.passenger.view.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

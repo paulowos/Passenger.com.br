@@ -1,4 +1,4 @@
-package br.com.passenger.ui.theme
+package br.com.passenger.view.theme
 
 import androidx.compose.ui.graphics.Color
 
