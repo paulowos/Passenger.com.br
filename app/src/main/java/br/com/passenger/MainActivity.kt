@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.passenger.view.component.Header
@@ -25,17 +25,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PassengercombrTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                        Header()
-                        Box(
-                            modifier =
-                                Modifier
-                                    .padding(innerPadding)
-                                    .padding(16.dp),
-                        ) {
-                            NewRideScreen()
-                        }
+                Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+                    Header()
+                    Box(
+                        modifier =
+                            Modifier
+                                .safeDrawingPadding()
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp),
+                    ) {
+                        NewRideScreen()
                     }
                 }
             }
