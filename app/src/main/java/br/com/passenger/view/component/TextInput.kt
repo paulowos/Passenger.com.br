@@ -15,10 +15,11 @@ import androidx.compose.ui.unit.dp
 fun TextInput(
     modifier: Modifier = Modifier,
     hint: String,
+    value: String,
     onValueChange: (String) -> Unit = {},
 ) {
     TextField(
-        value = "",
+        value = value,
         onValueChange = onValueChange,
         modifier =
             modifier
