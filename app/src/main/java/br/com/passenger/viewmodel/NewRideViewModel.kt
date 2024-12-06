@@ -7,6 +7,10 @@ import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +25,8 @@ class NewRideViewModel
         val destination = mutableStateOf(null as String?)
         val isError = mutableStateOf(false)
         val errorMessage = mutableStateOf("")
+        val isLoading = mutableStateOf(false)
+        private var submitJob: Job? = null
 
         fun onPassengerIdChange(passengerId: String) {
             isError.value = false
@@ -50,23 +56,33 @@ class NewRideViewModel
         }
 
         fun onClick() {
-            val newRide =
-                NewRide(
-                    passengerId = passengerId.value,
-                    origin = origin.value,
-                    destination = destination.value,
-                )
-
-            viewModelScope.launch {
-                when (val response = repository.estimateRide(newRide)) {
-                    is Resource.Success -> {
-                        isError.value = false
-                    }
-                    is Resource.Error -> {
-                        errorMessage.value = response.message.toString()
-                        isError.value = true
+            isError.value = false
+            isLoading.value = true
+            submitJob?.cancel()
+            submitJob =
+                viewModelScope.launch {
+                    delay(500)
+                    val newRide =
+                        NewRide(
+                            passengerId = passengerId.value,
+                            origin = origin.value,
+                            destination = destination.value,
+                        )
+                    when (val response = repository.estimateRide(newRide)) {
+                        is Resource.Success -> {
+                            if (currentCoroutineContext().isActive) {
+                                isError.value = false
+                                isLoading.value = false
+                            }
+                        }
+                        is Resource.Error -> {
+                            if (currentCoroutineContext().isActive) {
+                                errorMessage.value = response.message.toString()
+                                isError.value = true
+                                isLoading.value = false
+                            }
+                        }
                     }
                 }
-            }
         }
     }

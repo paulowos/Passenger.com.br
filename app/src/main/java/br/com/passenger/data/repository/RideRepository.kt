@@ -9,6 +9,7 @@ import br.com.passenger.util.Resource
 import com.google.gson.Gson
 import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.HttpException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -24,8 +25,10 @@ class RideRepository
             } catch (e: HttpException) {
                 val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
                 return Resource.Error(errorResponse.errorDescription)
+            } catch (e: UnknownHostException) {
+                return Resource.Error("Sem conexão com a internet")
             } catch (e: Exception) {
-                return Resource.Error(e.message.toString())
+                return Resource.Error("Erro desconhecido")
             }
         }
     }
