@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import br.com.passenger.view.component.Header
 import br.com.passenger.view.screen.NewRideScreen
 import br.com.passenger.view.theme.PassengercombrTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

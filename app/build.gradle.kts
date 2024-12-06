@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.dagger.hilt)
     kapt(libs.kapt)
+    implementation(libs.lifeCycleViewModelCompose)
 }
 
 kapt {
