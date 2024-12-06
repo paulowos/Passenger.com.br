@@ -2,6 +2,7 @@ package br.com.passenger.di
 
 import br.com.passenger.BuildConfig
 import br.com.passenger.data.network.RideAPI
+import br.com.passenger.data.repository.RideRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +23,8 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RideAPI::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRideRepository(rideAPI: RideAPI): RideRepository = RideRepository(rideAPI)
 }

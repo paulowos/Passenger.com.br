@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class EstimateRideRequest(
     @SerializedName("customer_id")
-    val customerId: String,
-    val destination: String,
-    val origin: String,
+    val customerId: String?,
+    val destination: String?,
+    val origin: String?,
 )
 
 fun NewRide.toEstimateRideRequest() =

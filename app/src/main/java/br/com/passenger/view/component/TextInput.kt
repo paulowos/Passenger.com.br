@@ -15,17 +15,19 @@ import androidx.compose.ui.unit.dp
 fun TextInput(
     modifier: Modifier = Modifier,
     hint: String,
-    value: String,
+    value: String?,
     onValueChange: (String) -> Unit = {},
+    isError: Boolean = false,
 ) {
     TextField(
-        value = value,
+        value = value ?: "",
         onValueChange = onValueChange,
         modifier =
             modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp)),
         label = { Text(hint) },
+        isError = isError,
     )
     Spacer(modifier = Modifier.height(8.dp))
 }
