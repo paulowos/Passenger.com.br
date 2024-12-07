@@ -1,5 +1,6 @@
 package br.com.passenger.view.component
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -24,4 +25,22 @@ fun PrimaryButton(
     ) {
         Text(text)
     }
+}
+
+@Composable
+fun PrimaryButton(
+    content: @Composable RowScope.() -> Unit,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        colors =
+            ButtonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+                disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor,
+            ),
+        content = content,
+    )
 }
