@@ -14,18 +14,15 @@ fun NewRideForm(
         hint = "ID do Passageiro",
         value = viewModel.passengerId.value,
         onValueChange = viewModel::onPassengerIdChange,
-        isError = viewModel.isError.value,
     )
     TextInput(
         hint = "Endereço de Origem",
         value = viewModel.origin.value,
         onValueChange = viewModel::onOriginChange,
-        isError = viewModel.isError.value,
     )
     TextInput(
         hint = "Endereço de Destino",
         value = viewModel.destination.value,
         onValueChange = viewModel::onDestinationChange,
-        isError = viewModel.isError.value,
     )
 }

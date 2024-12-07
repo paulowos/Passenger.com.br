@@ -16,9 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import br.com.passenger.view.component.Header
 import br.com.passenger.view.route.NewRideScreenRoute
+import br.com.passenger.view.route.RideOptionsScreenRoute
 import br.com.passenger.view.screen.NewRideScreen
+import br.com.passenger.view.screen.RideOptionsScreen
 import br.com.passenger.view.theme.PassengercombrTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +44,16 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(navController = navController, startDestination = NewRideScreenRoute) {
                             composable<NewRideScreenRoute> {
-                                NewRideScreen()
+                                NewRideScreen(navController)
+                            }
+                            composable<RideOptionsScreenRoute> {
+                                val args = it.toRoute<RideOptionsScreenRoute>()
+                                RideOptionsScreen(
+                                    passengerId = args.passengerId,
+                                    origin = args.origin,
+                                    destination = args.destination,
+                                    nav = navController,
+                                )
                             }
                         }
                     }

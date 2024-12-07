@@ -6,22 +6,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import br.com.passenger.view.component.NewRideForm
 import br.com.passenger.viewmodel.NewRideViewModel
 
 @Composable
 fun NewRideScreen(
+    nav: NavController,
     modifier: Modifier = Modifier,
     viewModel: NewRideViewModel = hiltViewModel(),
 ) {
@@ -39,21 +39,7 @@ fun NewRideScreen(
         Spacer(modifier = Modifier.height(16.dp))
         NewRideForm()
         Spacer(modifier = Modifier.height(8.dp))
-        if (viewModel.isError.value && !viewModel.isLoading.value) {
-            Text(
-                text = viewModel.errorMessage.value,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.error,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        if (viewModel.isLoading.value) {
-            CircularProgressIndicator()
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        Button(onClick = viewModel::onClick) {
+        Button(onClick = { viewModel.onClick(nav) }) {
             Text("Solicitar")
         }
     }
