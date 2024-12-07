@@ -22,7 +22,7 @@ fun Header(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier
-                .background(color = MaterialTheme.colorScheme.primary)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .fillMaxWidth()
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(16.dp, 0.dp, 16.dp, 32.dp),
@@ -31,7 +31,7 @@ fun Header(modifier: Modifier = Modifier) {
             text = "Passenger",
             fontSize = 40.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             letterSpacing = 5.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
@@ -40,7 +40,7 @@ fun Header(modifier: Modifier = Modifier) {
             text = ".com.br",
             fontSize = 20.sp,
             fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             textAlign = TextAlign.End,
             modifier = Modifier.width(320.dp),
         )

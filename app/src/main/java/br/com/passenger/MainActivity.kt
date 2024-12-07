@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -38,11 +37,13 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier =
                             Modifier
-                                .safeDrawingPadding()
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp),
                     ) {
-                        NavHost(navController = navController, startDestination = NewRideScreenRoute) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = NewRideScreenRoute,
+                        ) {
                             composable<NewRideScreenRoute> {
                                 NewRideScreen(navController)
                             }
