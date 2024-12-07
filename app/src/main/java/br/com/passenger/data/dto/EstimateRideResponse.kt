@@ -4,7 +4,7 @@ import br.com.passenger.model.Rider
 
 data class EstimateRideResponse(
     val destination: Destination,
-    val distance: Int,
+    val distance: Long,
     val duration: Int,
     val options: List<Option>,
     val origin: Origin,
@@ -221,9 +221,31 @@ data class EstimateRideResponse(
 
 fun EstimateRideResponse.Option.toRider() =
     Rider(
+        id = id,
         description = description,
         name = name,
         price = value,
         review = review.rating,
         vehicle = vehicle,
     )
+
+fun EstimateRideResponse.toConfirmRideRequest(
+    passengerId: String,
+    driverId: Int,
+): ConfirmRideRequest {
+    val option = options.find { it.id == driverId }
+    val distanceInKm = distance / 1000
+    return ConfirmRideRequest(
+        destination = destination.toString(),
+        distance = distanceInKm,
+        duration = duration.toString(),
+        origin = origin.toString(),
+        customerId = passengerId,
+        driver =
+            ConfirmRideRequest.Driver(
+                id = driverId.toString(),
+                name = option?.name ?: "",
+            ),
+        value = option?.value ?: 0.0,
+    )
+}

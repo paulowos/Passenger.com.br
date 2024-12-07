@@ -1,12 +1,13 @@
 package br.com.passenger.data.repository
 
-import br.com.passenger.data.dto.ErrorResponse
+import br.com.passenger.data.dto.ConfirmRideResponse
 import br.com.passenger.data.dto.EstimateRideResponse
+import br.com.passenger.data.dto.toConfirmRideRequest
 import br.com.passenger.data.dto.toEstimateRideRequest
 import br.com.passenger.data.network.RideAPI
 import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
-import com.google.gson.Gson
+import br.com.passenger.util.httpExceptionHandling
 import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.HttpException
 import java.net.UnknownHostException
@@ -23,7 +24,25 @@ class RideRepository
                 val response = rideAPI.estimateRide(newRide.toEstimateRideRequest())
                 return Resource.Success(response)
             } catch (e: HttpException) {
-                val errorResponse = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
+                val errorResponse = httpExceptionHandling(e)
+                return Resource.Error(errorResponse.errorDescription)
+            } catch (e: UnknownHostException) {
+                return Resource.Error("Sem conexão com a internet")
+            } catch (e: Exception) {
+                return Resource.Error("Erro desconhecido")
+            }
+        }
+
+        suspend fun confirmRide(
+            ride: EstimateRideResponse,
+            passengerId: String,
+            driverId: Int,
+        ): Resource<ConfirmRideResponse> {
+            try {
+                val response = rideAPI.confirmRide(ride.toConfirmRideRequest(passengerId, driverId))
+                return Resource.Success(response)
+            } catch (e: HttpException) {
+                val errorResponse = httpExceptionHandling(e)
                 return Resource.Error(errorResponse.errorDescription)
             } catch (e: UnknownHostException) {
                 return Resource.Error("Sem conexão com a internet")
