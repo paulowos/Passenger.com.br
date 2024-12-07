@@ -1,11 +1,11 @@
 package br.com.passenger.view.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,33 +20,36 @@ import androidx.navigation.NavController
 import br.com.passenger.view.route.NewRideScreenRoute
 
 @Composable
+fun InfoContainer(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        CircularProgressIndicator(color = MaterialTheme.colorScheme.primaryContainer)
+    }
+}
+
+@Composable
 fun InfoContainer(
-    isLoading: Boolean = false,
-    isError: Boolean = false,
-    errorMessage: String = "",
+    errorMessage: String,
     nav: NavController,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize(),
     ) {
-        if (isError && !isLoading) {
-            Text(
-                text = errorMessage,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.error,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = {
-                nav.popBackStack<NewRideScreenRoute>(inclusive = false)
-            }) { Text("Voltar") }
-        }
-        if (isLoading) {
-            CircularProgressIndicator()
+        Text(
+            text = errorMessage,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.error,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButton("Voltar") {
+            nav.popBackStack<NewRideScreenRoute>(inclusive = false)
         }
     }
 }

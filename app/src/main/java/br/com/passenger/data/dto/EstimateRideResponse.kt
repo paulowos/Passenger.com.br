@@ -1,5 +1,7 @@
 package br.com.passenger.data.dto
 
+import br.com.passenger.model.Rider
+
 data class EstimateRideResponse(
     val destination: Destination,
     val distance: Int,
@@ -216,3 +218,12 @@ data class EstimateRideResponse(
         }
     }
 }
+
+fun EstimateRideResponse.Option.toRider() =
+    Rider(
+        description = description,
+        name = name,
+        price = value,
+        review = review.rating,
+        vehicle = vehicle,
+    )
