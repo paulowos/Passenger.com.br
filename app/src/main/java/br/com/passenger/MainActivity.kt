@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import br.com.passenger.view.component.Header
+import br.com.passenger.view.route.NewRideScreenRoute
 import br.com.passenger.view.screen.NewRideScreen
 import br.com.passenger.view.theme.PassengercombrTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PassengercombrTheme {
+                val navController = rememberNavController()
                 Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
                     Header()
                     Box(
@@ -34,7 +39,11 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp),
                     ) {
-                        NewRideScreen()
+                        NavHost(navController = navController, startDestination = NewRideScreenRoute) {
+                            composable<NewRideScreenRoute> {
+                                NewRideScreen()
+                            }
+                        }
                     }
                 }
             }

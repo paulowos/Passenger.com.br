@@ -16,14 +16,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.passenger.view.component.NewRideForm
 import br.com.passenger.viewmodel.NewRideViewModel
 
 @Composable
 fun NewRideScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewRideViewModel = viewModel(),
+    viewModel: NewRideViewModel = hiltViewModel(),
 ) {
     Column(
         modifier = modifier.fillMaxSize(),

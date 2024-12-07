@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -75,7 +76,7 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.dagger.hilt)
     kapt(libs.kapt)
-    implementation(libs.lifeCycleViewModelCompose)
+    implementation(libs.bundles.navigation)
 }
 
 kapt {
