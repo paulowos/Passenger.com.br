@@ -2,6 +2,7 @@ package br.com.passenger.data.repository
 
 import br.com.passenger.data.dto.ConfirmRideResponse
 import br.com.passenger.data.dto.EstimateRideResponse
+import br.com.passenger.data.dto.RideHistoryResponse
 import br.com.passenger.data.dto.toConfirmRideRequest
 import br.com.passenger.data.dto.toEstimateRideRequest
 import br.com.passenger.data.network.RideAPI
@@ -40,6 +41,23 @@ class RideRepository
         ): Resource<ConfirmRideResponse> {
             try {
                 val response = rideAPI.confirmRide(ride.toConfirmRideRequest(passengerId, driverId))
+                return Resource.Success(response)
+            } catch (e: HttpException) {
+                val errorResponse = httpExceptionHandling(e)
+                return Resource.Error(errorResponse.errorDescription)
+            } catch (e: UnknownHostException) {
+                return Resource.Error("Sem conexão com a internet")
+            } catch (e: Exception) {
+                return Resource.Error("Erro desconhecido")
+            }
+        }
+
+        suspend fun getRidesHistory(
+            customerId: String,
+            driverId: String?,
+        ): Resource<RideHistoryResponse> {
+            try {
+                val response = rideAPI.getRidesHistory(customerId, driverId)
                 return Resource.Success(response)
             } catch (e: HttpException) {
                 val errorResponse = httpExceptionHandling(e)
