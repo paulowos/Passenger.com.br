@@ -23,8 +23,10 @@ import androidx.navigation.toRoute
 import br.com.passenger.view.component.Header
 import br.com.passenger.view.route.NewRideScreenRoute
 import br.com.passenger.view.route.RideOptionsScreenRoute
+import br.com.passenger.view.route.RidesHistoryScreenRoute
 import br.com.passenger.view.screen.NewRideScreen
 import br.com.passenger.view.screen.RideOptionsScreen
+import br.com.passenger.view.screen.RidesHistoryScreen
 import br.com.passenger.view.theme.PassengercombrTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = NewRideScreenRoute,
+                            startDestination = RidesHistoryScreenRoute,
                         ) {
                             composable<NewRideScreenRoute> {
                                 NewRideScreen(navController)
@@ -61,6 +63,9 @@ class MainActivity : ComponentActivity() {
                                     destination = args.destination,
                                     nav = navController,
                                 )
+                            }
+                            composable<RidesHistoryScreenRoute> {
+                                RidesHistoryScreen()
                             }
                         }
                     }
