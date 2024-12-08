@@ -9,6 +9,7 @@ import br.com.passenger.data.dto.EstimateRideResponse
 import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
+import br.com.passenger.view.route.RidesHistoryScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,7 +50,7 @@ class RideOptionsViewModel
             isConfirmError.value = false
             isConfirmLoading.value = true
             viewModelScope.launch {
-                delay(2000)
+                delay(500)
                 val result = repository.confirmRide(ride, passengerId, driverId)
                 if (result is Resource.Error) {
                     isConfirmError.value = true
@@ -59,7 +60,7 @@ class RideOptionsViewModel
                 }
                 isConfirmError.value = false
                 isConfirmLoading.value = false
-                nav.popBackStack()
+                nav.navigate(RidesHistoryScreenRoute)
             }
         }
     }

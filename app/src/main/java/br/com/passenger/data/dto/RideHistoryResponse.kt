@@ -1,7 +1,9 @@
 package br.com.passenger.data.dto
 
+import android.icu.text.NumberFormat
+import br.com.passenger.model.RideHistory
+import br.com.passenger.util.dateTimeFormatter
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDate
 
 data class RideHistoryResponse(
     @SerializedName("customer_id")
@@ -9,7 +11,7 @@ data class RideHistoryResponse(
     val rides: List<Ride>,
 ) {
     data class Ride(
-        val date: LocalDate,
+        val date: String,
         val destination: String,
         val distance: Double,
         val driver: Driver,
@@ -24,3 +26,28 @@ data class RideHistoryResponse(
         )
     }
 }
+
+fun RideHistoryResponse.Ride.toRideHistory() =
+    RideHistory(
+        date = dateTimeFormatter(date),
+        destination = destination,
+        distance = distance.toTwoDecimalPlaces(),
+        driver =
+            RideHistory.Driver(
+                id = driver.id,
+                name = driver.name,
+            ),
+        duration = duration,
+        id = id,
+        origin = origin,
+        value = value.toTwoDecimalPlaces(),
+    )
+
+fun Double.toTwoDecimalPlaces(): Double =
+    NumberFormat
+        .getInstance()
+        .apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+        }.format(this)
+        .toDouble()

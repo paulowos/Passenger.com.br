@@ -53,3 +53,23 @@ fun InfoContainer(
         }
     }
 }
+
+@Composable
+fun InfoContainer(
+    errorMessage: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            text = errorMessage,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.error,
+        )
+    }
+}

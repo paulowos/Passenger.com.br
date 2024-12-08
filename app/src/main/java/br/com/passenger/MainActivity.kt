@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = RidesHistoryScreenRoute,
+                            startDestination = NewRideScreenRoute,
                         ) {
                             composable<NewRideScreenRoute> {
                                 NewRideScreen(navController)

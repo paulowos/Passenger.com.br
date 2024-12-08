@@ -2,16 +2,29 @@ package br.com.passenger.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import br.com.passenger.data.dto.toRideHistory
+import br.com.passenger.data.repository.RideRepository
+import br.com.passenger.model.RideHistory
+import br.com.passenger.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RidesHistoryViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor(
+        private val repository: RideRepository,
+    ) : ViewModel() {
         val isExpanded = mutableStateOf(false)
         val drivers = mutableStateOf(listOf("Todos"))
         val selectedDriver = mutableStateOf("Selecione o motorista")
+        val passengerId = mutableStateOf("")
+        val ridesHistory = mutableStateOf(emptyList<RideHistory>())
+        val isLoading = mutableStateOf(false)
+        val isError = mutableStateOf(false)
+        val errorMessage = mutableStateOf("")
 
         fun toggleExpanded() {
             isExpanded.value = !isExpanded.value
@@ -20,5 +33,30 @@ class RidesHistoryViewModel
         fun selectDriver(driver: String) {
             selectedDriver.value = driver
             isExpanded.value = false
+        }
+
+        fun onPassengerIdChange(passengerId: String) {
+            this.passengerId.value = passengerId
+        }
+
+        fun getRidesHistory() {
+            isLoading.value = true
+            isError.value = false
+            viewModelScope.launch {
+                val response =
+                    if (selectedDriver.value == "Todos") {
+                        repository.getRidesHistory(passengerId.value, null)
+                    } else {
+                        repository.getRidesHistory(passengerId.value, selectedDriver.value)
+                    }
+                if (response is Resource.Success) {
+                    ridesHistory.value = response.data!!.rides.map { it.toRideHistory() }
+                    isLoading.value = false
+                } else {
+                    isError.value = true
+                    isLoading.value = false
+                    errorMessage.value = response.message!!
+                }
+            }
         }
     }
