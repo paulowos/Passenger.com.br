@@ -25,7 +25,7 @@ fun Header(modifier: Modifier = Modifier) {
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .fillMaxWidth()
                 .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(16.dp, 0.dp, 16.dp, 32.dp),
+                .padding(vertical = 16.dp),
     ) {
         Text(
             text = "Passenger",
