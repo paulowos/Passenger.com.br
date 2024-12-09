@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import br.com.passenger.data.dto.EstimateRideResponse
 import br.com.passenger.data.dto.toRider
 import br.com.passenger.util.Resource
+import br.com.passenger.view.component.ImageContainer
 import br.com.passenger.view.component.InfoContainer
 import br.com.passenger.view.component.RiderCard
 import br.com.passenger.viewmodel.RideOptionsViewModel
@@ -42,6 +43,7 @@ fun RideOptionsScreen(
             delay(2000)
             value = viewModel.estimateRide(passengerId, origin, destination)
         }
+
     if (rideEstimates.value is Resource.Loading) {
         InfoContainer()
         return
@@ -58,6 +60,7 @@ fun RideOptionsScreen(
         InfoContainer(errorMessage = "Sem opções disponiveis", nav = nav)
         return
     }
+
     Column(
         modifier =
             modifier
@@ -73,6 +76,7 @@ fun RideOptionsScreen(
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(8.dp))
+        ImageContainer(rideEstimates = rideEstimates.value)
         if (viewModel.isConfirmError.value) {
             Text(
                 text = viewModel.confirmErrorMessage.value,
@@ -81,6 +85,7 @@ fun RideOptionsScreen(
                 color = MaterialTheme.colorScheme.error,
             )
         }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),

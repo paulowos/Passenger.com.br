@@ -2,6 +2,7 @@ package br.com.passenger.di
 
 import br.com.passenger.BuildConfig
 import br.com.passenger.data.network.RideAPI
+import br.com.passenger.data.repository.MapRepository
 import br.com.passenger.data.repository.RideRepository
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRideRepository(rideAPI: RideAPI): RideRepository = RideRepository(rideAPI)
+
+    @Singleton
+    @Provides
+    fun provideMapRepository(): MapRepository = MapRepository()
 }

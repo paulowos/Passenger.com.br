@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import br.com.passenger.data.dto.EstimateRideResponse
+import br.com.passenger.data.repository.MapRepository
 import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class RideOptionsViewModel
     @Inject
     constructor(
-        private val repository: RideRepository,
+        private val rideRepository: RideRepository,
+        private val mapRepository: MapRepository,
     ) : ViewModel() {
         val isConfirmError = mutableStateOf(false)
         val confirmErrorMessage = mutableStateOf("")
@@ -37,8 +39,14 @@ class RideOptionsViewModel
                     origin = origin,
                     destination = destination,
                 )
-            return repository.estimateRide(newRide)
+            return rideRepository.estimateRide(newRide)
         }
+
+        fun getMapUrl(
+            height: Int,
+            width: Int,
+            rideResponse: EstimateRideResponse,
+        ): String = mapRepository.getMap(height, width, rideResponse)
 
         fun confirmRide(
             ride: EstimateRideResponse,
@@ -51,7 +59,7 @@ class RideOptionsViewModel
             isConfirmLoading.value = true
             viewModelScope.launch {
                 delay(500)
-                val result = repository.confirmRide(ride, passengerId, driverId)
+                val result = rideRepository.confirmRide(ride, passengerId, driverId)
                 if (result is Resource.Error) {
                     isConfirmError.value = true
                     isConfirmLoading.value = false

@@ -28,6 +28,16 @@ android {
                 "BASE_URL",
                 "\"https://xd5zl5kk2yltomvw5fb37y3bm40vsyrx.lambda-url.sa-east-1.on.aws/\"",
             )
+            buildConfigField(
+                "String",
+                "MAPS_API_KEY",
+                "\"AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI\"",
+            )
+            buildConfigField(
+                "String",
+                "MAPS_API_URL",
+                "\"https://maps.googleapis.com/maps/api/\"",
+            )
         }
         release {
             isMinifyEnabled = false
@@ -39,6 +49,16 @@ android {
                 "String",
                 "BASE_URL",
                 "\"https://xd5zl5kk2yltomvw5fb37y3bm40vsyrx.lambda-url.sa-east-1.on.aws/\"",
+            )
+            buildConfigField(
+                "String",
+                "MAPS_API_KEY",
+                "\"AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI\"",
+            )
+            buildConfigField(
+                "String",
+                "MAPS_API_URL",
+                "\"https://maps.googleapis.com/maps/api/\"",
             )
         }
     }
@@ -77,6 +97,7 @@ dependencies {
     implementation(libs.dagger.hilt)
     kapt(libs.kapt)
     implementation(libs.bundles.navigation)
+    implementation(libs.bundles.coil)
 }
 
 kapt {
