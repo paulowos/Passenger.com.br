@@ -17,6 +17,7 @@ import br.com.passenger.view.component.DriverDropdownMenu
 import br.com.passenger.view.component.InfoContainer
 import br.com.passenger.view.component.PrimaryButton
 import br.com.passenger.view.component.RideHistoryCard
+import br.com.passenger.view.component.ScreenTitle
 import br.com.passenger.view.component.TextInput
 import br.com.passenger.viewmodel.RidesHistoryViewModel
 
@@ -30,6 +31,8 @@ fun RidesHistoryScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        ScreenTitle("Histórico de Corridas")
+        Spacer(modifier = Modifier.height(16.dp))
         TextInput(
             modifier = modifier,
             hint = "ID do Passageiro",

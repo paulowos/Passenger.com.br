@@ -26,6 +26,7 @@ import br.com.passenger.util.Resource
 import br.com.passenger.view.component.ImageContainer
 import br.com.passenger.view.component.InfoContainer
 import br.com.passenger.view.component.RiderCard
+import br.com.passenger.view.component.ScreenTitle
 import br.com.passenger.viewmodel.RideOptionsViewModel
 import kotlinx.coroutines.delay
 
@@ -69,12 +70,7 @@ fun RideOptionsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "Opções de Corrida",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
+        ScreenTitle("Opções de Corrida")
         Spacer(modifier = Modifier.height(8.dp))
         ImageContainer(rideEstimates = rideEstimates.value)
         if (viewModel.isConfirmError.value) {
