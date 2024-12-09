@@ -3,12 +3,12 @@ package br.com.passenger.model
 data class RideHistory(
     val date: String,
     val destination: String,
-    val distance: Double,
+    val distance: String,
     val driver: Driver,
     val duration: String,
     val id: Int,
     val origin: String,
-    val value: Double,
+    val value: String,
 ) {
     data class Driver(
         val id: Int,

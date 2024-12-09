@@ -73,7 +73,7 @@ fun RideHistoryCardPreview() {
             RideHistory(
                 date = Date().toString(),
                 destination = "destination",
-                distance = 10.0,
+                distance = "10.0",
                 driver =
                     RideHistory.Driver(
                         id = 1,
@@ -82,7 +82,7 @@ fun RideHistoryCardPreview() {
                 duration = "duration",
                 id = 1,
                 origin = "origin",
-                value = 10.0,
+                value = "10.0",
             ),
     )
 }

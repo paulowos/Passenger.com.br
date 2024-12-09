@@ -43,11 +43,10 @@ fun RideHistoryResponse.Ride.toRideHistory() =
         value = value.toTwoDecimalPlaces(),
     )
 
-fun Double.toTwoDecimalPlaces(): Double =
+fun Double.toTwoDecimalPlaces(): String =
     NumberFormat
         .getInstance()
         .apply {
             maximumFractionDigits = 2
             minimumFractionDigits = 2
         }.format(this)
-        .toDouble()
