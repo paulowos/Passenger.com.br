@@ -12,6 +12,7 @@ import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
 import br.com.passenger.view.route.RidesHistoryScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +28,7 @@ class RideOptionsViewModel
         val confirmErrorMessage = mutableStateOf("")
         val isConfirmLoading = mutableStateOf(false)
         val driverId = mutableIntStateOf(0)
+        private var job: Job? = null
 
         suspend fun estimateRide(
             passengerId: String?,
@@ -54,21 +56,23 @@ class RideOptionsViewModel
             driverId: Int,
             nav: NavController,
         ) {
+            job?.cancel()
             this.driverId.intValue = driverId
             isConfirmError.value = false
             isConfirmLoading.value = true
-            viewModelScope.launch {
-                delay(500)
-                val result = rideRepository.confirmRide(ride, passengerId, driverId)
-                if (result is Resource.Error) {
-                    isConfirmError.value = true
+            job =
+                viewModelScope.launch {
+                    delay(500)
+                    val result = rideRepository.confirmRide(ride, passengerId, driverId)
+                    if (result is Resource.Error) {
+                        isConfirmError.value = true
+                        isConfirmLoading.value = false
+                        confirmErrorMessage.value = result.message!!
+                        return@launch
+                    }
+                    isConfirmError.value = false
                     isConfirmLoading.value = false
-                    confirmErrorMessage.value = result.message!!
-                    return@launch
+                    nav.navigate(RidesHistoryScreenRoute)
                 }
-                isConfirmError.value = false
-                isConfirmLoading.value = false
-                nav.navigate(RidesHistoryScreenRoute)
-            }
         }
     }
