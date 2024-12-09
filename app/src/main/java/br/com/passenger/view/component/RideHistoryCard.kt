@@ -39,17 +39,14 @@ fun RideHistoryCard(
                 text = "Origem: ${ride.origin}",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Destino: ${ride.destination}",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Distância: ${ride.distance} km",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Duração: ${ride.duration}",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
