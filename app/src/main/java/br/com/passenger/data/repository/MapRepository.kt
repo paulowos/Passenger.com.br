@@ -30,8 +30,10 @@ class MapRepository {
         val markersDestination =
             "color:red|label:D|${rideResponse.destination.latitude},${rideResponse.destination.longitude}"
 
+        val language = "pt-BR"
+
         val imgUrl =
-            "${BuildConfig.MAPS_API_URL}staticmap?size=$size&path=$path&key=$key&scale=2&markers=$markersOrigin&markers=$markersDestination"
+            "${BuildConfig.MAPS_API_URL}staticmap?size=$size&path=$path&key=$key&scale=2&markers=$markersOrigin&markers=$markersDestination&language=$language"
 
         return imgUrl
     }
