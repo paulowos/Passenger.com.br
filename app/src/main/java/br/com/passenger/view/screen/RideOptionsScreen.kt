@@ -2,7 +2,6 @@ package br.com.passenger.view.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -81,16 +80,14 @@ fun RideOptionsScreen(
                 color = MaterialTheme.colorScheme.error,
             )
         }
-
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 16.dp),
         ) {
             items(rideEstimates.value.data!!.options) {
                 RiderCard(rider = it.toRider(), onClick = {
                     viewModel.confirmRide(rideEstimates.value.data!!, passengerId!!, it.id, nav)
                 })
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }

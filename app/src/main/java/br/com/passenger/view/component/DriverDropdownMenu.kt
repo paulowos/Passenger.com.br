@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.sharp.ArrowDropDown
+import androidx.compose.material.icons.sharp.Face
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -35,11 +36,18 @@ fun DriverDropdownMenu(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            Text(
-                text = viewModel.selectedDriver.value,
-            )
+            Row {
+                Icon(
+                    Icons.Sharp.Face,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 13.dp),
+                )
+                Text(
+                    text = viewModel.selectedDriver.value,
+                )
+            }
             Icon(
-                Icons.Outlined.ArrowDropDown,
+                Icons.Sharp.ArrowDropDown,
                 contentDescription = null,
             )
         }

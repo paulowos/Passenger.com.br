@@ -42,6 +42,12 @@ class RidesHistoryViewModel
         fun getRidesHistory() {
             isLoading.value = true
             isError.value = false
+
+            if (!validateFields()) {
+                isLoading.value = false
+                return
+            }
+
             viewModelScope.launch {
                 val response =
                     if (selectedDriver.value == "Todos") {
@@ -58,5 +64,14 @@ class RidesHistoryViewModel
                     errorMessage.value = response.message!!
                 }
             }
+        }
+
+        private fun validateFields(): Boolean {
+            if (passengerId.value.isEmpty()) {
+                errorMessage.value = "O campo ID do Passageiro é obrigatório"
+                isError.value = true
+                return false
+            }
+            return true
         }
     }

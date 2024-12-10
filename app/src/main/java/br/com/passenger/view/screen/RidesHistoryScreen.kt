@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +40,7 @@ fun RidesHistoryScreen(
             hint = "ID do Passageiro",
             value = viewModel.passengerId.value,
             onValueChange = viewModel::onPassengerIdChange,
+            icon = Icons.Sharp.Person,
         )
         DriverDropdownMenu()
         Spacer(modifier = Modifier.height(8.dp))
@@ -46,6 +49,7 @@ fun RidesHistoryScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = viewModel::getRidesHistory,
         )
+        Spacer(modifier = Modifier.height(8.dp))
         if (viewModel.isLoading.value) {
             InfoContainer()
             return
@@ -56,10 +60,10 @@ fun RidesHistoryScreen(
             )
             return
         }
-        LazyColumn(modifier = modifier.padding(top = 8.dp)) {
+        LazyColumn {
             items(viewModel.ridesHistory.value) { ride ->
                 RideHistoryCard(ride = ride)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
