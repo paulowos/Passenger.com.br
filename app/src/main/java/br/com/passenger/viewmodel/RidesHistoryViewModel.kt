@@ -8,6 +8,8 @@ import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.model.RideHistory
 import br.com.passenger.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +27,7 @@ class RidesHistoryViewModel
         val isLoading = mutableStateOf(false)
         val isError = mutableStateOf(false)
         val errorMessage = mutableStateOf("")
+        private var job: Job? = null
 
         fun toggleExpanded() {
             isExpanded.value = !isExpanded.value
@@ -43,27 +46,29 @@ class RidesHistoryViewModel
             isLoading.value = true
             isError.value = false
 
-            if (!validateFields()) {
-                isLoading.value = false
-                return
-            }
-
-            viewModelScope.launch {
-                val response =
-                    if (selectedDriver.value == "Todos") {
-                        repository.getRidesHistory(passengerId.value, null)
-                    } else {
-                        repository.getRidesHistory(passengerId.value, selectedDriver.value)
+            job?.cancel()
+            job =
+                viewModelScope.launch {
+                    delay(500)
+                    if (!validateFields()) {
+                        isLoading.value = false
+                        return@launch
                     }
-                if (response is Resource.Success) {
-                    ridesHistory.value = response.data!!.rides.map { it.toRideHistory() }
-                    isLoading.value = false
-                } else {
-                    isError.value = true
-                    isLoading.value = false
-                    errorMessage.value = response.message!!
+                    val response =
+                        if (selectedDriver.value == "Todos") {
+                            repository.getRidesHistory(passengerId.value, null)
+                        } else {
+                            repository.getRidesHistory(passengerId.value, selectedDriver.value)
+                        }
+                    if (response is Resource.Success) {
+                        ridesHistory.value = response.data!!.rides.map { it.toRideHistory() }
+                        isLoading.value = false
+                    } else {
+                        isError.value = true
+                        isLoading.value = false
+                        errorMessage.value = response.message!!
+                    }
                 }
-            }
         }
 
         private fun validateFields(): Boolean {

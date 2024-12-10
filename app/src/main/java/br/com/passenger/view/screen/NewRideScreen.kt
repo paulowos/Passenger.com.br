@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +35,18 @@ fun NewRideScreen(
         Spacer(modifier = Modifier.height(16.dp))
         NewRideForm()
         Spacer(modifier = Modifier.height(8.dp))
-        PrimaryButton("Solicitar") {
+        PrimaryButton(content = {
+            if (viewModel.isLoading.value) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.size(24.dp),
+                    strokeWidth = 3.dp,
+                )
+            } else {
+                Text("Solicitar")
+            }
+        }, onClick = {
             viewModel.onClick(nav)
-        }
+        })
     }
 }
