@@ -98,6 +98,8 @@ dependencies {
     kapt(libs.kapt)
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.coil)
+
+    testImplementation(libs.mockk)
 }
 
 kapt {
