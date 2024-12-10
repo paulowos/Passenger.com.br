@@ -1,13 +1,15 @@
 package br.com.passenger.mock
 
+import br.com.passenger.data.dto.ErrorResponse
 import br.com.passenger.data.dto.EstimateRideResponse
 import br.com.passenger.data.dto.EstimateRideResponse.Destination
 import br.com.passenger.data.dto.EstimateRideResponse.Origin
 import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse
 import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse.Route
 import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse.Route.Leg
+import br.com.passenger.model.NewRide
 
-object EstimateRideResponseMock {
+object Mocks {
     fun getEstimateRideResponse(): EstimateRideResponse =
         EstimateRideResponse(
             destination =
@@ -126,5 +128,18 @@ object EstimateRideResponseMock {
                                 ),
                         ),
                 ),
+        )
+
+    fun getNewRide(): NewRide =
+        NewRide(
+            passengerId = "passengerId",
+            origin = "origin",
+            destination = "destination",
+        )
+
+    fun getErrorResponse(): ErrorResponse =
+        ErrorResponse(
+            errorDescription = "Http Error",
+            errorCode = "400",
         )
 }
