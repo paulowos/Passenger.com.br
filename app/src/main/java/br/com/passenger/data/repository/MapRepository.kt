@@ -11,9 +11,9 @@ class MapRepository {
         height: Int,
         width: Int,
         rideResponse: EstimateRideResponse,
+        mapsApiKey: String = BuildConfig.MAPS_API_KEY,
     ): String {
         val size = "${width}x$height"
-        val key = BuildConfig.MAPS_API_KEY
 
         val polyline =
             URLEncoder.encode(
@@ -33,7 +33,7 @@ class MapRepository {
         val language = "pt-BR"
 
         val imgUrl =
-            "${BuildConfig.MAPS_API_URL}staticmap?size=$size&path=$path&key=$key&scale=2&markers=$markersOrigin&markers=$markersDestination&language=$language"
+            "${BuildConfig.MAPS_API_URL}staticmap?size=$size&path=$path&key=$mapsApiKey&scale=2&markers=$markersOrigin&markers=$markersDestination&language=$language"
 
         return imgUrl
     }
