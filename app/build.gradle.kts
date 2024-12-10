@@ -99,7 +99,7 @@ dependencies {
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.coil)
 
-    testImplementation(libs.mockk)
+    testImplementation(libs.bundles.test)
 }
 
 kapt {

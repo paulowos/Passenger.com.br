@@ -16,6 +16,7 @@ kotlinxSerialization = "1.7.3"
 hiltNavigationCompose = "1.2.0"
 coil = "3.0.4"
 mockk = "1.13.13"
+strikt = "0.34.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,8 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+strikt = { group = "io.strikt", name = "strikt-core", version.ref = "strikt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -67,4 +70,7 @@ navigation = [
 coil = [
     "coil-compose",
     "coil-network"
+]
+test = [
+    "mockk", "kotlinx-coroutines-test", "strikt"
 ]
