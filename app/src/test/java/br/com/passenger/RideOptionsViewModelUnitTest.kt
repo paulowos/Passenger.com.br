@@ -1,21 +1,24 @@
 package br.com.passenger
 
 import androidx.navigation.NavController
+import br.com.passenger.data.dto.ConfirmRideResponse
 import br.com.passenger.data.repository.MapRepository
 import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.mock.Mocks
+import br.com.passenger.rules.MainCoroutineRule
 import br.com.passenger.util.Resource
+import br.com.passenger.view.route.RidesHistoryScreenRoute
 import br.com.passenger.viewmodel.RideOptionsViewModel
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import strikt.api.expect
 import strikt.api.expectThat
@@ -28,6 +31,10 @@ class RideOptionsViewModelUnitTest {
     private lateinit var mapRepository: MapRepository
     private lateinit var viewModel: RideOptionsViewModel
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutineRule = MainCoroutineRule()
+
     @Before
     fun setup() {
         clearAllMocks(currentThreadOnly = true)
@@ -36,7 +43,6 @@ class RideOptionsViewModelUnitTest {
         viewModel = RideOptionsViewModel(rideRepository, mapRepository)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Teste estimateRide`() =
         runTest {
@@ -68,39 +74,44 @@ class RideOptionsViewModelUnitTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Teste confirmRide`() {
-        Dispatchers.setMain(StandardTestDispatcher())
-        val estimateRideResponse = Mocks.getEstimateRideResponse()
-        val passengerId = "1"
-        val driverId = 1
-        val nav = mockk<NavController>()
-        val expected = Resource.Success(Mocks.getConfirmRideResponse())
-        coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
+    fun `Teste confirmRide`() =
+        runTest {
+            val estimateRideResponse = Mocks.getEstimateRideResponse()
+            val passengerId = "1"
+            val driverId = 1
+            val nav = mockk<NavController>(relaxed = true)
+            val expected = Resource.Success(Mocks.getConfirmRideResponse())
+            coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
 
-        viewModel.confirmRide(estimateRideResponse, passengerId, driverId, nav)
+            viewModel.confirmRide(estimateRideResponse, passengerId, driverId, nav)
+            advanceUntilIdle()
 
-        expect {
-            that(viewModel.isConfirmError.value).isFalse()
-            that(viewModel.isConfirmLoading.value).isTrue()
+            expect {
+                that(viewModel.isConfirmError.value).isFalse()
+                that(viewModel.isConfirmLoading.value).isFalse()
+            }
+            verify(exactly = 1) { nav.navigate(RidesHistoryScreenRoute) }
         }
-    }
 
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    @Test
-//    fun `Teste confirmRide com erro`() =
-//        runTest(StandardTestDispatcher()) {
-//            Dispatchers.setMain(StandardTestDispatcher())
-//            val estimateRideResponse = Mocks.getEstimateRideResponse()
-//            val passengerId = "1"
-//            val driverId = 1
-//            val nav = mockk<NavController>()
-//            val expected = Resource.Error<ConfirmRideResponse>("Error")
-//            coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
-//
-//            viewModel.confirmRide(estimateRideResponse, passengerId, driverId, nav)
-//
-//            expectThat(viewModel.isConfirmError.value).isTrue()
-//            expectThat(viewModel.isConfirmLoading.value).isFalse()
-//            expectThat(viewModel.confirmErrorMessage.value).isEqualTo("Error")
-//        }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `Teste confirmRide com erro`() =
+        runTest {
+            val estimateRideResponse = Mocks.getEstimateRideResponse()
+            val passengerId = "1"
+            val driverId = 1
+            val nav = mockk<NavController>(relaxed = true)
+            val expected = Resource.Error<ConfirmRideResponse>("Error")
+            coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
+
+            viewModel.confirmRide(estimateRideResponse, passengerId, driverId, nav)
+            advanceUntilIdle()
+
+            expect {
+                that(viewModel.isConfirmError.value).isTrue()
+                that(viewModel.isConfirmLoading.value).isFalse()
+                that(viewModel.confirmErrorMessage.value).isEqualTo("Error")
+            }
+            verify(exactly = 0) { nav.navigate(RidesHistoryScreenRoute) }
+        }
 }
