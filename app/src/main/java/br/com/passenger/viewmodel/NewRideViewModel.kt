@@ -21,10 +21,6 @@ class NewRideViewModel
         val isLoading = mutableStateOf(false)
         private var job: Job? = null
 
-        init {
-            isLoading.value = false
-        }
-
         fun onPassengerIdChange(passengerId: String) {
             isLoading.value = false
             if (passengerId.isEmpty()) {
