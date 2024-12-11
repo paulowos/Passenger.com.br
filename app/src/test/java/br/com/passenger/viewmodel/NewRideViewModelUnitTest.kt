@@ -1,7 +1,6 @@
-package br.com.passenger
+package br.com.passenger.viewmodel
 
 import androidx.navigation.NavController
-import br.com.passenger.viewmodel.NewRideViewModel
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

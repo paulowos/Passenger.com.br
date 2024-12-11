@@ -1,4 +1,4 @@
-package br.com.passenger
+package br.com.passenger.viewmodel
 
 import androidx.navigation.NavController
 import br.com.passenger.data.dto.ConfirmRideResponse
@@ -8,7 +8,6 @@ import br.com.passenger.mock.Mocks
 import br.com.passenger.rules.MainCoroutineRule
 import br.com.passenger.util.Resource
 import br.com.passenger.view.route.RidesHistoryScreenRoute
-import br.com.passenger.viewmodel.RideOptionsViewModel
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
