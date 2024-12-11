@@ -12,7 +12,7 @@ import br.com.passenger.data.dto.RideHistoryResponse
 import br.com.passenger.model.NewRide
 
 object Mocks {
-    fun getEstimateRideResponse() =
+    fun getEstimateRideResponse(isOptionEmpty: Boolean = false) =
         EstimateRideResponse(
             destination =
                 Destination(
@@ -21,7 +21,7 @@ object Mocks {
                 ),
             distance = 1000,
             duration = 1000,
-            options = emptyList(),
+            options = if (isOptionEmpty) emptyList() else listOf(getEstimateRideResponseOption()),
             origin =
                 Origin(
                     latitude = 0.0,
@@ -151,5 +151,19 @@ object Mocks {
         RideHistoryResponse(
             customerId = "customerId",
             rides = emptyList(),
+        )
+
+    fun getEstimateRideResponseOption() =
+        EstimateRideResponse.Option(
+            description = "description",
+            id = 1,
+            name = "name",
+            review =
+                EstimateRideResponse.Option.Review(
+                    comment = "comment",
+                    rating = 5,
+                ),
+            value = 10.0,
+            vehicle = "vehicle",
         )
 }
