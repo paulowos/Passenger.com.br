@@ -36,9 +36,9 @@ class RideRepositoryUnitTest {
             val rideApi = mockk<RideAPI>()
             val expected = Mocks.getEstimateRideResponse()
             coEvery { rideApi.estimateRide(any()) } returns expected
+
             val rideRepository = RideRepository(rideApi)
             val newRide = Mocks.getNewRide()
-
             val result = rideRepository.estimateRide(newRide)
 
             expect {
@@ -52,9 +52,9 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.estimateRide(any()) } throws Exception()
+
             val rideRepository = RideRepository(rideApi)
             val newRide = Mocks.getNewRide()
-
             val result = rideRepository.estimateRide(newRide)
 
             expect {
@@ -74,13 +74,11 @@ class RideRepositoryUnitTest {
                         "Http Error".toResponseBody(),
                     ),
                 )
-
             mockkStatic(::httpExceptionHandling)
             every { httpExceptionHandling(any()) } returns Mocks.getErrorResponse()
 
             val rideRepository = RideRepository(rideApi)
             val newRide = Mocks.getNewRide()
-
             val result = rideRepository.estimateRide(newRide)
 
             expect {
@@ -94,9 +92,9 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.estimateRide(any()) } throws UnknownHostException()
+
             val rideRepository = RideRepository(rideApi)
             val newRide = Mocks.getNewRide()
-
             val result = rideRepository.estimateRide(newRide)
 
             expect {
@@ -111,11 +109,11 @@ class RideRepositoryUnitTest {
             val rideApi = mockk<RideAPI>()
             val expected = Mocks.getConfirmRideResponse()
             coEvery { rideApi.confirmRide(any()) } returns expected
-            val rideRepository = RideRepository(rideApi)
             val ride = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.confirmRide(ride, passengerId, driverId)
 
             expect {
@@ -129,11 +127,11 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.confirmRide(any()) } throws Exception()
-            val rideRepository = RideRepository(rideApi)
             val ride = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.confirmRide(ride, passengerId, driverId)
 
             expect {
@@ -153,15 +151,13 @@ class RideRepositoryUnitTest {
                         "Http Error".toResponseBody(),
                     ),
                 )
-
             mockkStatic(::httpExceptionHandling)
             every { httpExceptionHandling(any()) } returns Mocks.getErrorResponse()
-
-            val rideRepository = RideRepository(rideApi)
             val ride = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.confirmRide(ride, passengerId, driverId)
 
             expect {
@@ -175,11 +171,11 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.confirmRide(any()) } throws UnknownHostException()
-            val rideRepository = RideRepository(rideApi)
             val ride = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.confirmRide(ride, passengerId, driverId)
 
             expect {
@@ -194,10 +190,10 @@ class RideRepositoryUnitTest {
             val rideApi = mockk<RideAPI>()
             val expected = Mocks.getRideHistoryResponse()
             coEvery { rideApi.getRidesHistory(any(), any()) } returns expected
-            val rideRepository = RideRepository(rideApi)
             val customerId = "1"
             val driverId = "1"
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.getRidesHistory(customerId, driverId)
 
             expect {
@@ -211,10 +207,10 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.getRidesHistory(any(), any()) } throws Exception()
-            val rideRepository = RideRepository(rideApi)
             val customerId = "1"
             val driverId = "1"
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.getRidesHistory(customerId, driverId)
 
             expect {
@@ -234,14 +230,12 @@ class RideRepositoryUnitTest {
                         "Http Error".toResponseBody(),
                     ),
                 )
-
             mockkStatic(::httpExceptionHandling)
             every { httpExceptionHandling(any()) } returns Mocks.getErrorResponse()
-
-            val rideRepository = RideRepository(rideApi)
             val customerId = "1"
             val driverId = "1"
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.getRidesHistory(customerId, driverId)
 
             expect {
@@ -255,10 +249,10 @@ class RideRepositoryUnitTest {
         runTest {
             val rideApi = mockk<RideAPI>()
             coEvery { rideApi.getRidesHistory(any(), any()) } throws UnknownHostException()
-            val rideRepository = RideRepository(rideApi)
             val customerId = "1"
             val driverId = "1"
 
+            val rideRepository = RideRepository(rideApi)
             val result = rideRepository.getRidesHistory(customerId, driverId)
 
             expect {
