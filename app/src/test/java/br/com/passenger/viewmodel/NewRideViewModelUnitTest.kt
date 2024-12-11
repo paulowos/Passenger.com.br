@@ -1,22 +1,36 @@
 package br.com.passenger.viewmodel
 
 import androidx.navigation.NavController
+import br.com.passenger.rules.MainCoroutineRule
+import br.com.passenger.view.route.RideOptionsScreenRoute
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
 import strikt.assertions.isNull
-import strikt.assertions.isTrue
 
 class NewRideViewModelUnitTest {
+    private lateinit var viewModel: NewRideViewModel
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @get:Rule
+    var coroutinesTestRule = MainCoroutineRule()
+
+    @Before
+    fun setup() {
+        viewModel = NewRideViewModel()
+    }
+
     @Test
     fun `Teste valores inciais`() {
-        val viewModel = NewRideViewModel()
-
         expect {
             that(viewModel.isLoading.value).isFalse()
             that(viewModel.passengerId.value).isEqualTo(null)
@@ -27,7 +41,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onPassengerIdChange`() {
-        val viewModel = NewRideViewModel()
         val passengerId = "123"
 
         viewModel.onPassengerIdChange(passengerId)
@@ -40,7 +53,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onPassengerIdChange vazio`() {
-        val viewModel = NewRideViewModel()
         val passengerId = ""
 
         viewModel.onPassengerIdChange(passengerId)
@@ -53,7 +65,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onOriginChange`() {
-        val viewModel = NewRideViewModel()
         val origin = "123"
 
         viewModel.onOriginChange(origin)
@@ -66,7 +77,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onOriginChange vazio`() {
-        val viewModel = NewRideViewModel()
         val origin = ""
 
         viewModel.onOriginChange(origin)
@@ -79,7 +89,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onDestinationChange`() {
-        val viewModel = NewRideViewModel()
         val destination = "123"
 
         viewModel.onDestinationChange(destination)
@@ -92,7 +101,6 @@ class NewRideViewModelUnitTest {
 
     @Test
     fun `Teste onDestinationChange vazio`() {
-        val viewModel = NewRideViewModel()
         val destination = ""
 
         viewModel.onDestinationChange(destination)
@@ -105,15 +113,14 @@ class NewRideViewModelUnitTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Teste onClick`() {
-        val viewModel = NewRideViewModel()
-        val nav = mockk<NavController>(relaxed = true)
-        Dispatchers.setMain(Dispatchers.Unconfined)
+    fun `Teste onClick`() =
+        runTest {
+            val nav = mockk<NavController>(relaxed = true)
 
-        viewModel.onClick(nav)
+            viewModel.onClick(nav)
+            advanceUntilIdle()
 
-        expect {
-            that(viewModel.isLoading.value).isTrue()
+            expectThat(viewModel.isLoading.value).isFalse()
+            verify { nav.navigate<RideOptionsScreenRoute>(any()) }
         }
-    }
 }
