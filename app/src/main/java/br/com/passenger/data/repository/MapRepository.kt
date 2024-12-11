@@ -11,7 +11,7 @@ class MapRepository {
         height: Int,
         width: Int,
         rideResponse: EstimateRideResponse,
-        mapsApiKey: String = BuildConfig.MAPS_API_KEY,
+        mapsApiKey: String? = BuildConfig.MAPS_API_KEY,
     ): String {
         val size = "${width}x$height"
 
