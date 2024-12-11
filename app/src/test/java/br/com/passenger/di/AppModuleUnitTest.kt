@@ -1,9 +1,8 @@
-package br.com.passenger
+package br.com.passenger.di
 
 import br.com.passenger.data.network.RideAPI
 import br.com.passenger.data.repository.MapRepository
 import br.com.passenger.data.repository.RideRepository
-import br.com.passenger.di.AppModule
 import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
