@@ -1,4 +1,4 @@
-package br.com.passenger
+package br.com.passenger.repository
 
 import br.com.passenger.data.dto.ConfirmRideResponse
 import br.com.passenger.data.dto.EstimateRideResponse

@@ -1,4 +1,4 @@
-package br.com.passenger
+package br.com.passenger.repository
 
 import br.com.passenger.data.repository.MapRepository
 import br.com.passenger.mock.Mocks
