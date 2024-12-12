@@ -26,28 +26,19 @@ class NewRideViewModel
 
         fun onPassengerIdChange(passengerId: String) {
             isLoading.value = false
-            fieldErrorNames.value.toMutableList().apply {
-                remove(FieldNames.PASSENGER_ID)
-                fieldErrorNames.value = this
-            }
+            fieldErrorNames.value -= FieldNames.PASSENGER_ID
             this.passengerId.value = passengerId
         }
 
         fun onOriginChange(origin: String) {
             isLoading.value = false
-            fieldErrorNames.value.toMutableList().apply {
-                remove(FieldNames.ORIGIN)
-                fieldErrorNames.value = this
-            }
+            fieldErrorNames.value -= FieldNames.ORIGIN
             this.origin.value = origin
         }
 
         fun onDestinationChange(destination: String) {
             isLoading.value = false
-            fieldErrorNames.value.toMutableList().apply {
-                remove(FieldNames.DESTINATION)
-                fieldErrorNames.value = this
-            }
+            fieldErrorNames.value -= FieldNames.DESTINATION
             this.destination.value = destination
         }
 
@@ -71,22 +62,13 @@ class NewRideViewModel
 
         private fun validateFields(): Boolean {
             if (passengerId.value.isNullOrEmpty()) {
-                fieldErrorNames.value.toMutableList().apply {
-                    add(FieldNames.PASSENGER_ID)
-                    fieldErrorNames.value = this
-                }
+                fieldErrorNames.value += FieldNames.PASSENGER_ID
             }
             if (origin.value.isNullOrEmpty()) {
-                fieldErrorNames.value.toMutableList().apply {
-                    add(FieldNames.ORIGIN)
-                    fieldErrorNames.value = this
-                }
+                fieldErrorNames.value += FieldNames.ORIGIN
             }
             if (destination.value.isNullOrEmpty()) {
-                fieldErrorNames.value.toMutableList().apply {
-                    add(FieldNames.DESTINATION)
-                    fieldErrorNames.value = this
-                }
+                fieldErrorNames.value += FieldNames.DESTINATION
             }
             return fieldErrorNames.value.isEmpty()
         }
