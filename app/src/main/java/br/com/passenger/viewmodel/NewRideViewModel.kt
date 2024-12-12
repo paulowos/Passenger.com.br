@@ -20,35 +20,35 @@ class NewRideViewModel
         val origin = mutableStateOf(null as String?)
         val destination = mutableStateOf(null as String?)
         val isLoading = mutableStateOf(false)
-        val fieldErrorName = mutableStateOf(null as FieldNames?)
-        val fieldErrorMessage = mutableStateOf("")
+        val fieldErrorNames = mutableStateOf(emptyList<FieldNames>())
+
         private var job: Job? = null
 
         fun onPassengerIdChange(passengerId: String) {
             isLoading.value = false
-            if (passengerId.isEmpty()) {
-                this.passengerId.value = null
-            } else {
-                this.passengerId.value = passengerId
+            fieldErrorNames.value.toMutableList().apply {
+                remove(FieldNames.PASSENGER_ID)
+                fieldErrorNames.value = this
             }
+            this.passengerId.value = passengerId
         }
 
         fun onOriginChange(origin: String) {
             isLoading.value = false
-            if (origin.isEmpty()) {
-                this.origin.value = null
-            } else {
-                this.origin.value = origin
+            fieldErrorNames.value.toMutableList().apply {
+                remove(FieldNames.ORIGIN)
+                fieldErrorNames.value = this
             }
+            this.origin.value = origin
         }
 
         fun onDestinationChange(destination: String) {
             isLoading.value = false
-            if (destination.isEmpty()) {
-                this.destination.value = null
-            } else {
-                this.destination.value = destination
+            fieldErrorNames.value.toMutableList().apply {
+                remove(FieldNames.DESTINATION)
+                fieldErrorNames.value = this
             }
+            this.destination.value = destination
         }
 
         fun onClick(nav: NavController) {
@@ -71,20 +71,23 @@ class NewRideViewModel
 
         private fun validateFields(): Boolean {
             if (passengerId.value.isNullOrEmpty()) {
-                fieldErrorName.value = FieldNames.PASSENGER_ID
-                fieldErrorMessage.value = "ID do Passageiro é obrigatório"
-                return false
+                fieldErrorNames.value.toMutableList().apply {
+                    add(FieldNames.PASSENGER_ID)
+                    fieldErrorNames.value = this
+                }
             }
             if (origin.value.isNullOrEmpty()) {
-                fieldErrorName.value = FieldNames.ORIGIN
-                fieldErrorMessage.value = "Endereço de Origem é obrigatório"
-                return false
+                fieldErrorNames.value.toMutableList().apply {
+                    add(FieldNames.ORIGIN)
+                    fieldErrorNames.value = this
+                }
             }
             if (destination.value.isNullOrEmpty()) {
-                fieldErrorName.value = FieldNames.DESTINATION
-                fieldErrorMessage.value = "Endereço de Destino é obrigatório"
-                return false
+                fieldErrorNames.value.toMutableList().apply {
+                    add(FieldNames.DESTINATION)
+                    fieldErrorNames.value = this
+                }
             }
-            return true
+            return fieldErrorNames.value.isEmpty()
         }
     }

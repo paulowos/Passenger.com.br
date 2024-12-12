@@ -8,20 +8,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import br.com.passenger.data.dto.EstimateRideResponse
 import br.com.passenger.data.dto.toRider
 import br.com.passenger.util.Resource
+import br.com.passenger.view.component.ErrorMessageInline
 import br.com.passenger.view.component.ImageContainer
 import br.com.passenger.view.component.InfoContainer
 import br.com.passenger.view.component.RiderCard
@@ -73,11 +70,8 @@ fun RideOptionsScreen(
         Spacer(modifier = Modifier.height(8.dp))
         ImageContainer(rideEstimates = rideEstimates.value)
         if (viewModel.isConfirmError.value) {
-            Text(
-                text = viewModel.confirmErrorMessage.value,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.error,
+            ErrorMessageInline(
+                errorMessage = viewModel.confirmErrorMessage.value,
             )
         }
         LazyColumn(
