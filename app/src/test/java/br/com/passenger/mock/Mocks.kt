@@ -9,6 +9,7 @@ import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse
 import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse.Route
 import br.com.passenger.data.dto.EstimateRideResponse.RouteResponse.Route.Leg
 import br.com.passenger.data.dto.RideHistoryResponse
+import br.com.passenger.model.Driver
 import br.com.passenger.model.NewRide
 
 object Mocks {
@@ -165,5 +166,12 @@ object Mocks {
                 ),
             value = 10.0,
             vehicle = "vehicle",
+        )
+
+    fun getListOfDrivers() =
+        listOf(
+            Driver(1, "Motorista 1", minKm = 1),
+            Driver(2, "Motorista 2", minKm = 5),
+            Driver(3, "Motorista 3", minKm = 10),
         )
 }
