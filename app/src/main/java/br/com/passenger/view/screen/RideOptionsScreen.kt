@@ -72,6 +72,7 @@ fun RideOptionsScreen(
         if (viewModel.isConfirmError.value) {
             ErrorMessageInline(
                 errorMessage = viewModel.confirmErrorMessage.value,
+                modifier = Modifier.padding(16.dp),
             )
         }
         LazyColumn(

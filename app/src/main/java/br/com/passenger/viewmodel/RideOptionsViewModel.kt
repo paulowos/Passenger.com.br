@@ -28,6 +28,7 @@ class RideOptionsViewModel
         val confirmErrorMessage = mutableStateOf("")
         val isConfirmLoading = mutableStateOf(false)
         val driverId = mutableIntStateOf(0)
+        private val drivers = rideRepository.drivers
         private var job: Job? = null
 
         suspend fun estimateRide(
@@ -56,6 +57,12 @@ class RideOptionsViewModel
             driverId: Int,
             nav: NavController,
         ) {
+            if (!validateDriverMinKm(ride, driverId)) {
+                isConfirmError.value = true
+                confirmErrorMessage.value =
+                    "Distância inválida para o motorista ${drivers.find { it.id == driverId }!!.name}, tente outro motorista"
+                return
+            }
             job?.cancel()
             this.driverId.intValue = driverId
             isConfirmError.value = false
@@ -74,5 +81,14 @@ class RideOptionsViewModel
                     isConfirmLoading.value = false
                     nav.navigate(RidesHistoryScreenRoute)
                 }
+        }
+
+        private fun validateDriverMinKm(
+            ride: EstimateRideResponse,
+            driverId: Int,
+        ): Boolean {
+            val distance = ride.distance / 1000
+            val driver = drivers.find { it.id == driverId }
+            return driver!!.minKm <= distance
         }
     }

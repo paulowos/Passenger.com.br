@@ -6,6 +6,7 @@ import br.com.passenger.data.dto.RideHistoryResponse
 import br.com.passenger.data.dto.toConfirmRideRequest
 import br.com.passenger.data.dto.toEstimateRideRequest
 import br.com.passenger.data.network.RideAPI
+import br.com.passenger.model.Driver
 import br.com.passenger.model.NewRide
 import br.com.passenger.util.Resource
 import br.com.passenger.util.httpExceptionHandling
@@ -20,6 +21,13 @@ class RideRepository
     constructor(
         private val rideAPI: RideAPI,
     ) {
+        val drivers =
+            listOf(
+                Driver(1, "Homer Simpson", 1),
+                Driver(2, "Dominic Toretto", 5),
+                Driver(3, "James Bond", 10),
+            )
+
         suspend fun estimateRide(newRide: NewRide): Resource<EstimateRideResponse> {
             try {
                 val response = rideAPI.estimateRide(newRide.toEstimateRideRequest())
