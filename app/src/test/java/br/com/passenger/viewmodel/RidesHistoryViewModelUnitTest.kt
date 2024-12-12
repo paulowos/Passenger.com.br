@@ -3,11 +3,14 @@ package br.com.passenger.viewmodel
 import br.com.passenger.data.dto.toRideHistory
 import br.com.passenger.data.repository.RideRepository
 import br.com.passenger.mock.Mocks
+import br.com.passenger.model.Driver
 import br.com.passenger.rules.MainCoroutineRule
+import br.com.passenger.util.FieldNames
 import br.com.passenger.util.Resource
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -16,7 +19,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import strikt.api.expect
-import strikt.api.expectThat
+import strikt.assertions.contains
 import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
@@ -34,6 +37,7 @@ class RidesHistoryViewModelUnitTest {
     fun setup() {
         clearAllMocks(currentThreadOnly = true)
         repository = mockk()
+        every { repository.getDrivers() } returns Mocks.getListOfDrivers()
         viewModel = RidesHistoryViewModel(repository)
     }
 
@@ -41,33 +45,50 @@ class RidesHistoryViewModelUnitTest {
     fun `Teste valores iniciais`() {
         expect {
             that(viewModel.isExpanded.value).isFalse()
-            that(viewModel.drivers.value).isEqualTo(listOf("Todos"))
+            that(viewModel.drivers.value).isEqualTo(
+                Mocks.getListOfDrivers() +
+                    Driver(
+                        0,
+                        "Todos",
+                        0,
+                    ),
+            )
             that(viewModel.selectedDriver.value).isEqualTo("Selecione o motorista")
             that(viewModel.passengerId.value).isEqualTo("")
             that(viewModel.ridesHistory.value).isEmpty()
             that(viewModel.isLoading.value).isFalse()
             that(viewModel.isError.value).isFalse()
             that(viewModel.errorMessage.value).isEqualTo("")
+            that(viewModel.fieldErrorNames.value).isEmpty()
         }
     }
 
     @Test
     fun `Teste toggleExpanded`() {
         viewModel.toggleExpanded()
-        expectThat(viewModel.isExpanded.value).isTrue()
+        expect {
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.DRIVER)
+            that(viewModel.isExpanded.value).isTrue()
+        }
     }
 
     @Test
     fun `Teste selectDriver`() {
-        viewModel.selectDriver("Motorista 1")
-        expectThat(viewModel.selectedDriver.value).isEqualTo("Motorista 1")
-        expectThat(viewModel.isExpanded.value).isFalse()
+        viewModel.selectDriver(1)
+        expect {
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.DRIVER)
+            that(viewModel.selectedDriver.value).isEqualTo("1")
+            that(viewModel.isExpanded.value).isFalse()
+        }
     }
 
     @Test
     fun `Teste onPassengerIdChange`() {
         viewModel.onPassengerIdChange("123")
-        expectThat(viewModel.passengerId.value).isEqualTo("123")
+        expect {
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.PASSENGER_ID)
+            that(viewModel.passengerId.value).isEqualTo("123")
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -76,7 +97,7 @@ class RidesHistoryViewModelUnitTest {
         runTest {
             val expected = Mocks.getRideHistoryResponse()
             viewModel.passengerId.value = "123"
-            viewModel.selectedDriver.value = "Todos"
+            viewModel.selectedDriver.value = "0"
             coEvery { repository.getRidesHistory(any(), any()) } returns Resource.Success(expected)
 
             viewModel.getRidesHistory()
@@ -89,26 +110,27 @@ class RidesHistoryViewModelUnitTest {
             }
         }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `Teste getRidesHistory com campos invalidos`() =
-        runTest {
-            viewModel.getRidesHistory()
-            advanceUntilIdle()
+    fun `Teste getRidesHistory com campos invalidos`() {
+        viewModel.getRidesHistory()
 
-            expect {
-                that(viewModel.isLoading.value).isFalse()
-                that(viewModel.isError.value).isTrue()
-                that(viewModel.errorMessage.value).isEqualTo("O campo ID do Passageiro é obrigatório")
-            }
+        expect {
+            that(viewModel.isLoading.value).isFalse()
+            that(viewModel.isError.value).isFalse()
+            that(viewModel.errorMessage.value).isEmpty()
+            that(viewModel.fieldErrorNames.value).contains(
+                FieldNames.PASSENGER_ID,
+                FieldNames.DRIVER,
+            )
         }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `Teste getRidesHistory falha`() =
         runTest {
             viewModel.passengerId.value = "123"
-            viewModel.selectedDriver.value = "Todos"
+            viewModel.selectedDriver.value = "0"
             coEvery { repository.getRidesHistory(any(), any()) } returns Resource.Error("Error")
 
             viewModel.getRidesHistory()
@@ -127,13 +149,13 @@ class RidesHistoryViewModelUnitTest {
         runTest {
             val expected = Mocks.getRideHistoryResponse()
             viewModel.passengerId.value = "123"
-            viewModel.selectedDriver.value = "Motorista 1"
+            viewModel.selectedDriver.value = "1"
             coEvery { repository.getRidesHistory(any(), any()) } returns Resource.Success(expected)
 
             viewModel.getRidesHistory()
             advanceUntilIdle()
 
-            coVerify { repository.getRidesHistory("123", "Motorista 1") }
+            coVerify { repository.getRidesHistory("123", "1") }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -142,7 +164,7 @@ class RidesHistoryViewModelUnitTest {
         runTest {
             val expected = Mocks.getRideHistoryResponse()
             viewModel.passengerId.value = "123"
-            viewModel.selectedDriver.value = "Todos"
+            viewModel.selectedDriver.value = "0"
             coEvery { repository.getRidesHistory(any(), any()) } returns Resource.Success(expected)
 
             viewModel.getRidesHistory()

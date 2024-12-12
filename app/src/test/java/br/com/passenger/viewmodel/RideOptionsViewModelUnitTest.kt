@@ -29,6 +29,7 @@ class RideOptionsViewModelUnitTest {
     private lateinit var rideRepository: RideRepository
     private lateinit var mapRepository: MapRepository
     private lateinit var viewModel: RideOptionsViewModel
+    private lateinit var nav: NavController
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -38,8 +39,10 @@ class RideOptionsViewModelUnitTest {
     fun setup() {
         clearAllMocks(currentThreadOnly = true)
         rideRepository = mockk()
+        every { rideRepository.getDrivers() } returns Mocks.getListOfDrivers()
         mapRepository = mockk()
         viewModel = RideOptionsViewModel(rideRepository, mapRepository)
+        nav = mockk(relaxed = true)
     }
 
     @Test
@@ -78,7 +81,6 @@ class RideOptionsViewModelUnitTest {
             val estimateRideResponse = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
-            val nav = mockk<NavController>(relaxed = true)
             val expected = Resource.Success(Mocks.getConfirmRideResponse())
             coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
 
@@ -99,7 +101,6 @@ class RideOptionsViewModelUnitTest {
             val estimateRideResponse = Mocks.getEstimateRideResponse()
             val passengerId = "1"
             val driverId = 1
-            val nav = mockk<NavController>(relaxed = true)
             val expected = Resource.Error<ConfirmRideResponse>("Error")
             coEvery { rideRepository.confirmRide(any(), any(), any()) } returns expected
 
@@ -113,4 +114,22 @@ class RideOptionsViewModelUnitTest {
             }
             verify(exactly = 0) { nav.navigate(RidesHistoryScreenRoute) }
         }
+
+    @Test
+    fun `Teste confirmRide com erro de distancia invalida`() {
+        val estimateRideResponse = Mocks.getEstimateRideResponse(isDistanceInvalid = true)
+        val passengerId = "1"
+        val driverId = 1
+        viewModel.driverId.intValue = 1
+
+        viewModel.confirmRide(estimateRideResponse, passengerId, driverId, nav)
+
+        expect {
+            that(viewModel.isConfirmError.value).isTrue()
+            that(viewModel.confirmErrorMessage.value).isEqualTo(
+                "Distância inválida para o motorista Motorista 1, tente outro motorista",
+            )
+        }
+        verify(exactly = 0) { nav.navigate(RidesHistoryScreenRoute) }
+    }
 }

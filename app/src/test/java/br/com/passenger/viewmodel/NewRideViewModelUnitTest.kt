@@ -2,6 +2,7 @@ package br.com.passenger.viewmodel
 
 import androidx.navigation.NavController
 import br.com.passenger.rules.MainCoroutineRule
+import br.com.passenger.util.FieldNames
 import br.com.passenger.view.route.RideOptionsScreenRoute
 import io.mockk.mockk
 import io.mockk.verify
@@ -13,9 +14,10 @@ import org.junit.Rule
 import org.junit.Test
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.assertions.contains
+import strikt.assertions.isEmpty
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
-import strikt.assertions.isNull
 
 class NewRideViewModelUnitTest {
     private lateinit var viewModel: NewRideViewModel
@@ -33,9 +35,10 @@ class NewRideViewModelUnitTest {
     fun `Teste valores inciais`() {
         expect {
             that(viewModel.isLoading.value).isFalse()
-            that(viewModel.passengerId.value).isEqualTo(null)
-            that(viewModel.origin.value).isEqualTo(null)
-            that(viewModel.destination.value).isEqualTo(null)
+            that(viewModel.passengerId.value).isEmpty()
+            that(viewModel.origin.value).isEmpty()
+            that(viewModel.destination.value).isEmpty()
+            that(viewModel.fieldErrorNames.value).isEqualTo(emptyList())
         }
     }
 
@@ -48,18 +51,7 @@ class NewRideViewModelUnitTest {
         expect {
             that(viewModel.isLoading.value).isFalse()
             that(viewModel.passengerId.value).isEqualTo(passengerId)
-        }
-    }
-
-    @Test
-    fun `Teste onPassengerIdChange vazio`() {
-        val passengerId = ""
-
-        viewModel.onPassengerIdChange(passengerId)
-
-        expect {
-            that(viewModel.isLoading.value).isFalse()
-            that(viewModel.passengerId.value).isNull()
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.PASSENGER_ID)
         }
     }
 
@@ -72,18 +64,7 @@ class NewRideViewModelUnitTest {
         expect {
             that(viewModel.isLoading.value).isFalse()
             that(viewModel.origin.value).isEqualTo(origin)
-        }
-    }
-
-    @Test
-    fun `Teste onOriginChange vazio`() {
-        val origin = ""
-
-        viewModel.onOriginChange(origin)
-
-        expect {
-            that(viewModel.isLoading.value).isFalse()
-            that(viewModel.origin.value).isNull()
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.ORIGIN)
         }
     }
 
@@ -96,18 +77,7 @@ class NewRideViewModelUnitTest {
         expect {
             that(viewModel.isLoading.value).isFalse()
             that(viewModel.destination.value).isEqualTo(destination)
-        }
-    }
-
-    @Test
-    fun `Teste onDestinationChange vazio`() {
-        val destination = ""
-
-        viewModel.onDestinationChange(destination)
-
-        expect {
-            that(viewModel.isLoading.value).isFalse()
-            that(viewModel.destination.value).isNull()
+            that(viewModel.fieldErrorNames.value).not().contains(FieldNames.DESTINATION)
         }
     }
 
@@ -116,6 +86,9 @@ class NewRideViewModelUnitTest {
     fun `Teste onClick`() =
         runTest {
             val nav = mockk<NavController>(relaxed = true)
+            viewModel.passengerId.value = "Teste"
+            viewModel.origin.value = "Teste"
+            viewModel.destination.value = "Teste"
 
             viewModel.onClick(nav)
             advanceUntilIdle()
@@ -123,4 +96,18 @@ class NewRideViewModelUnitTest {
             expectThat(viewModel.isLoading.value).isFalse()
             verify { nav.navigate<RideOptionsScreenRoute>(any()) }
         }
+
+    @Test
+    fun `Teste onClick com campos vazios`() {
+        val nav = mockk<NavController>(relaxed = true)
+
+        viewModel.onClick(nav)
+
+        expect {
+            that(viewModel.isLoading.value).isFalse()
+            that(viewModel.fieldErrorNames.value).contains(FieldNames.PASSENGER_ID)
+            that(viewModel.fieldErrorNames.value).contains(FieldNames.ORIGIN)
+            that(viewModel.fieldErrorNames.value).contains(FieldNames.DESTINATION)
+        }
+    }
 }
