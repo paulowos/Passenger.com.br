@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import br.com.passenger.util.FieldNames
 import br.com.passenger.view.route.RideOptionsScreenRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -19,6 +20,8 @@ class NewRideViewModel
         val origin = mutableStateOf(null as String?)
         val destination = mutableStateOf(null as String?)
         val isLoading = mutableStateOf(false)
+        val fieldErrorName = mutableStateOf(null as FieldNames?)
+        val fieldErrorMessage = mutableStateOf("")
         private var job: Job? = null
 
         fun onPassengerIdChange(passengerId: String) {
@@ -49,6 +52,7 @@ class NewRideViewModel
         }
 
         fun onClick(nav: NavController) {
+            if (!validateFields()) return
             isLoading.value = true
             job?.cancel()
             job =
@@ -63,5 +67,24 @@ class NewRideViewModel
                     )
                     isLoading.value = false
                 }
+        }
+
+        private fun validateFields(): Boolean {
+            if (passengerId.value.isNullOrEmpty()) {
+                fieldErrorName.value = FieldNames.PASSENGER_ID
+                fieldErrorMessage.value = "ID do Passageiro é obrigatório"
+                return false
+            }
+            if (origin.value.isNullOrEmpty()) {
+                fieldErrorName.value = FieldNames.ORIGIN
+                fieldErrorMessage.value = "Endereço de Origem é obrigatório"
+                return false
+            }
+            if (destination.value.isNullOrEmpty()) {
+                fieldErrorName.value = FieldNames.DESTINATION
+                fieldErrorMessage.value = "Endereço de Destino é obrigatório"
+                return false
+            }
+            return true
         }
     }

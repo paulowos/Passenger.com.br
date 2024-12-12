@@ -19,7 +19,7 @@ fun TextInput(
     hint: String,
     value: String?,
     onValueChange: (String) -> Unit = {},
-    isError: Boolean = false,
+    isError: Boolean,
     icon: ImageVector,
 ) {
     TextField(

@@ -41,6 +41,7 @@ fun RidesHistoryScreen(
             value = viewModel.passengerId.value,
             onValueChange = viewModel::onPassengerIdChange,
             icon = Icons.Sharp.Person,
+            isError = false,
         )
         DriverDropdownMenu()
         Spacer(modifier = Modifier.height(8.dp))
