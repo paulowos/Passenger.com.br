@@ -39,6 +39,7 @@ class RidesHistoryViewModel
         }
 
         fun selectDriver(driverId: Int) {
+            fieldErrorNames.value -= FieldNames.DRIVER
             selectedDriver.value = driverId.toString()
             isExpanded.value = false
         }
