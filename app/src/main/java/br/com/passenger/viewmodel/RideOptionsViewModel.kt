@@ -48,8 +48,7 @@ class RideOptionsViewModel
             height: Int,
             width: Int,
             rideResponse: EstimateRideResponse,
-            apiKey: String? = null,
-        ): String = mapRepository.getMap(height, width, rideResponse, apiKey)
+        ): String = mapRepository.getMap(height, width, rideResponse)
 
         fun confirmRide(
             ride: EstimateRideResponse,

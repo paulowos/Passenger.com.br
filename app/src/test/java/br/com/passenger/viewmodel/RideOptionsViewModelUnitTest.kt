@@ -64,7 +64,7 @@ class RideOptionsViewModelUnitTest {
         val apiKey = "Test"
         val expected =
             "https://maps.googleapis.com/maps/api/staticmap?center=${estimateRideResponse.origin}&zoom=13&size=${width}x$height&markers=color:red%7Clabel:A%7C${estimateRideResponse.origin}&markers=color:green%7Clabel:B%7C${estimateRideResponse.destination}&key=$apiKey"
-        every { mapRepository.getMap(any(), any(), any(), any()) } returns expected
+        every { mapRepository.getMap(any(), any(), any()) } returns expected
 
         val result = viewModel.getMapUrl(height, width, estimateRideResponse)
 
