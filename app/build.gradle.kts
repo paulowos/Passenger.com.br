@@ -1,4 +1,4 @@
-val mapsApiKey = "AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI"
+private val mapsApiKey = "AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI"
 
 plugins {
     alias(libs.plugins.android.application)
