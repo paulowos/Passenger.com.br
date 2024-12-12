@@ -15,7 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import br.com.passenger.util.FieldNames
 import br.com.passenger.view.component.DriverDropdownMenu
+import br.com.passenger.view.component.ErrorMessageInline
 import br.com.passenger.view.component.InfoContainer
 import br.com.passenger.view.component.PrimaryButton
 import br.com.passenger.view.component.RideHistoryCard
@@ -28,6 +30,8 @@ fun RidesHistoryScreen(
     modifier: Modifier = Modifier,
     viewModel: RidesHistoryViewModel = hiltViewModel(),
 ) {
+    val containsPassengerIdError = viewModel.fieldErrorNames.value.contains(FieldNames.PASSENGER_ID)
+
     Column(
         modifier = modifier.padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,8 +45,14 @@ fun RidesHistoryScreen(
             value = viewModel.passengerId.value,
             onValueChange = viewModel::onPassengerIdChange,
             icon = Icons.Sharp.Person,
-            isError = false,
+            isError = containsPassengerIdError,
         )
+        if (containsPassengerIdError) {
+            ErrorMessageInline(
+                errorMessage = "ID do Passageiro é obrigatório",
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
+        }
         DriverDropdownMenu()
         Spacer(modifier = Modifier.height(8.dp))
         PrimaryButton(

@@ -4,4 +4,5 @@ enum class FieldNames {
     PASSENGER_ID,
     ORIGIN,
     DESTINATION,
+    DRIVER,
 }
