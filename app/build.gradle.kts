@@ -1,4 +1,5 @@
-private val mapsApiKey = "AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI"
+// Instruções de como conseguir sua chave de API através desse link: https://developers.google.com/maps/documentation/maps-static/cloud-setup
+private val mapsApiKey = "Insira sua chave de API do Google Maps aqui"
 
 plugins {
     alias(libs.plugins.android.application)
