@@ -16,27 +16,30 @@ import javax.inject.Inject
 class NewRideViewModel
     @Inject
     constructor() : ViewModel() {
-        val passengerId = mutableStateOf(null as String?)
-        val origin = mutableStateOf(null as String?)
-        val destination = mutableStateOf(null as String?)
+        val passengerId = mutableStateOf("")
+        val origin = mutableStateOf("")
+        val destination = mutableStateOf("")
         val isLoading = mutableStateOf(false)
         val fieldErrorNames = mutableStateOf(emptyList<FieldNames>())
 
         private var job: Job? = null
 
         fun onPassengerIdChange(passengerId: String) {
+            job?.cancel()
             isLoading.value = false
             fieldErrorNames.value -= FieldNames.PASSENGER_ID
             this.passengerId.value = passengerId
         }
 
         fun onOriginChange(origin: String) {
+            job?.cancel()
             isLoading.value = false
             fieldErrorNames.value -= FieldNames.ORIGIN
             this.origin.value = origin
         }
 
         fun onDestinationChange(destination: String) {
+            job?.cancel()
             isLoading.value = false
             fieldErrorNames.value -= FieldNames.DESTINATION
             this.destination.value = destination
@@ -61,13 +64,13 @@ class NewRideViewModel
         }
 
         private fun validateFields(): Boolean {
-            if (passengerId.value.isNullOrEmpty()) {
+            if (passengerId.value.isEmpty()) {
                 fieldErrorNames.value += FieldNames.PASSENGER_ID
             }
-            if (origin.value.isNullOrEmpty()) {
+            if (origin.value.isEmpty()) {
                 fieldErrorNames.value += FieldNames.ORIGIN
             }
-            if (destination.value.isNullOrEmpty()) {
+            if (destination.value.isEmpty()) {
                 fieldErrorNames.value += FieldNames.DESTINATION
             }
             return fieldErrorNames.value.isEmpty()
