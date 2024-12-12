@@ -28,7 +28,7 @@ class RideOptionsViewModel
         val confirmErrorMessage = mutableStateOf("")
         val isConfirmLoading = mutableStateOf(false)
         val driverId = mutableIntStateOf(0)
-        private val drivers = rideRepository.drivers
+        private val drivers = rideRepository.getDrivers()
         private var job: Job? = null
 
         suspend fun estimateRide(

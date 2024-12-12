@@ -23,7 +23,7 @@ class RidesHistoryViewModel
     ) : ViewModel() {
         val isExpanded = mutableStateOf(false)
         val drivers =
-            mutableStateOf(repository.drivers + Driver(0, "Todos", 0))
+            mutableStateOf(repository.getDrivers() + Driver(0, "Todos", 0))
         val selectedDriver = mutableStateOf("Selecione o motorista")
         val passengerId = mutableStateOf("")
         val ridesHistory = mutableStateOf(emptyList<RideHistory>())
@@ -59,10 +59,6 @@ class RidesHistoryViewModel
             job =
                 viewModelScope.launch {
                     delay(500)
-                    if (!validateFields()) {
-                        isLoading.value = false
-                        return@launch
-                    }
                     val response =
                         if (selectedDriver.value == "0") {
                             repository.getRidesHistory(passengerId.value, null)

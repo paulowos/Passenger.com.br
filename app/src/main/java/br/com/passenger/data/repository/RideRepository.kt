@@ -21,7 +21,7 @@ class RideRepository
     constructor(
         private val rideAPI: RideAPI,
     ) {
-        val drivers =
+        fun getDrivers() =
             listOf(
                 Driver(1, "Homer Simpson", 1),
                 Driver(2, "Dominic Toretto", 5),
