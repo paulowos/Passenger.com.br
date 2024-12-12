@@ -1,3 +1,5 @@
+val mapsApiKey = "AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI"
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -31,7 +33,7 @@ android {
             buildConfigField(
                 "String",
                 "MAPS_API_KEY",
-                "\"AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI\"",
+                "\"$mapsApiKey\"",
             )
             buildConfigField(
                 "String",
@@ -53,7 +55,7 @@ android {
             buildConfigField(
                 "String",
                 "MAPS_API_KEY",
-                "\"AIzaSyChCe52DJaKRRE3_crheNzBpd7v5__LgRI\"",
+                "\"$mapsApiKey\"",
             )
             buildConfigField(
                 "String",
